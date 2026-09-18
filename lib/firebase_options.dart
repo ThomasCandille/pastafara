@@ -57,7 +57,6 @@ class DefaultFirebaseOptions {
     projectId: 'pastafaria-ef3da',
     storageBucket: 'pastafaria-ef3da.firebasestorage.app',
   );
-
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyCrkxZ3kAgeoRWJaSIrobg8IzyjROaMhdo',
     appId: '1:37162936657:ios:9cc4fbd9747394a8b54b70',
@@ -66,7 +65,6 @@ class DefaultFirebaseOptions {
     storageBucket: 'pastafaria-ef3da.firebasestorage.app',
     iosBundleId: 'com.example.pastafara',
   );
-
   static const FirebaseOptions macos = FirebaseOptions(
     apiKey: 'AIzaSyCrkxZ3kAgeoRWJaSIrobg8IzyjROaMhdo',
     appId: '1:37162936657:ios:9cc4fbd9747394a8b54b70',
