@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "37162936657",
+    "project_id": "pastafaria-ef3da",
+    "storage_bucket": "pastafaria-ef3da.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:37162936657:android:3976e47935ea8600b54b70",
+        "android_client_info": {
+          "package_name": "com.example.pastafara"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAuyCPlMNPIA8bpLa0JNqppbcqv8tyfx74"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
