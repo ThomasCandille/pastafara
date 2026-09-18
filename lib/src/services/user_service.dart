@@ -11,4 +11,12 @@ class UserService {
   Future<void> addUserToDatabase(String userId, User user) async {
     await _firestore.collection('users').doc(userId).set(user.toJson());
   }
+
+  Future<User?> getUserFromDatabase(String userId) async {
+    final userdata = await _firestore.collection('users').doc(userId).get();
+    if (userdata.exists) {
+      return User.fromJson(userdata.data()!);
+    }
+    return null;
+  }
 }
