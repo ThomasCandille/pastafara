@@ -1,5 +1,5 @@
 import 'dart:async';
-
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -18,8 +18,8 @@ Future<void> main() async {
         : const AndroidPlayIntegrityProvider(),
   );
 
-  runApp(const MainApp());
-  unawaited(_testFirebaseAi());
+  runApp(ProviderScope(child: const MainApp()));
+  //unawaited(_testFirebaseAi());
 }
 
 Future<void> _testFirebaseAi() async {
