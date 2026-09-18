@@ -1,14 +1,18 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class ProfileView extends StatefulWidget {
+import '../models/user_model.dart' as app;
+import '../providers/user_provider.dart';
+
+class ProfileView extends ConsumerStatefulWidget {
   const ProfileView({super.key});
 
   @override
-  State<ProfileView> createState() => _ProfileViewState();
+  ConsumerState<ProfileView> createState() => _ProfileViewState();
 }
 
-class _ProfileViewState extends State<ProfileView> {
+class _ProfileViewState extends ConsumerState<ProfileView> {
   final auth = FirebaseAuth.instance;
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
@@ -37,7 +41,25 @@ class _ProfileViewState extends State<ProfileView> {
           _ => error.message ?? error.code,
         };
       });
+    } on FirebaseException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _error = error.message ?? error.code;
+      });
     }
+  }
+
+  Future<void> _addInfoToDatabase() async {
+    final user = auth.currentUser;
+    if (user == null) return;
+
+    final appUser = app.User(
+      email: user.email ?? '',
+      favoriteMeals: const [],
+      allergies: const [],
+    );
+
+    await ref.read(userServiceProvider).addUserToDatabase(user.uid, appUser);
   }
 
   Future<void> _createAccount() async {
@@ -46,6 +68,7 @@ class _ProfileViewState extends State<ProfileView> {
         email: emailController.text.trim(),
         password: passwordController.text,
       );
+      await _addInfoToDatabase();
     } on FirebaseAuthException catch (error) {
       if (!mounted) return;
       setState(() {
@@ -53,6 +76,11 @@ class _ProfileViewState extends State<ProfileView> {
           'email-already-in-use' => 'Un compte existe déjà avec cet e-mail.',
           _ => error.message ?? error.code,
         };
+      });
+    } on FirebaseException catch (error) {
+      if (!mounted) return;
+      setState(() {
+        _error = error.message ?? error.code;
       });
     }
   }
