@@ -55,12 +55,7 @@ Widget buildMealCard(
         Row(
           children: [
             Text(mealName),
-            Text(mealArea ?? ''),
-            const Image(
-              image: AssetImage('assets/icons/favorite.png'),
-              height: 24,
-              width: 24,
-            ),
+            Text(mealArea != null ? ' - $mealArea' : '')
           ],
         ),
       ],
