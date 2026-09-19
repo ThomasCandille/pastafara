@@ -26,6 +26,10 @@ class User {
   }
 
   factory User.empty() {
-    return User(email: '', favoriteMeals: [], allergies: []);
+    return User(
+      email: '',
+      favoriteMeals: [],
+      allergies: [],
+    );
   }
 }
