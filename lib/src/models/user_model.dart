@@ -1,4 +1,10 @@
+import 'package:isar_community/isar.dart';
+
+part 'user_model.g.dart';
+
+@collection
 class User {
+  Id id = Isar.autoIncrement;
   final String email;
   final List<String> favoriteMeals;
   final List<String> allergies;

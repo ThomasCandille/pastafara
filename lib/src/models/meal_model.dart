@@ -1,4 +1,10 @@
+import 'package:isar_community/isar.dart';
+
+part 'meal_model.g.dart';
+
+@collection
 class Meal {
+  Id id = Isar.autoIncrement;
   final String strMeal;
   final String strMealThumb;
   final String idMeal;
