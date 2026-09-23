@@ -19,34 +19,4 @@ class UserService {
     }
     return null;
   }
-
-  Future<List<String>> getFavoriteMeals(String userId) async {
-    final userdata = await _firestore.collection('users').doc(userId).get();
-    if (userdata.exists) {
-      return User.fromJson(userdata.data()!).favoriteMeals;
-    }
-    return [];
-  }
-
-  Stream<List<String>> watchFavoriteMeals(String userId) {
-    return _firestore.collection('users').doc(userId).snapshots().map((user) {
-      final favoriteMeals = user.data()?['favoriteMeals'];
-      if (favoriteMeals is List) {
-        return favoriteMeals.whereType<String>().toList();
-      }
-      return [];
-    });
-  }
-
-  Future<void> addFavoriteMeal(String userId, String mealName) async {
-    await _firestore.collection('users').doc(userId).set({
-      'favoriteMeals': FieldValue.arrayUnion([mealName]),
-    }, SetOptions(merge: true));
-  }
-
-  Future<void> removeFavoriteMeal(String userId, String mealName) async {
-    await _firestore.collection('users').doc(userId).set({
-      'favoriteMeals': FieldValue.arrayRemove([mealName]),
-    }, SetOptions(merge: true));
-  }
 }

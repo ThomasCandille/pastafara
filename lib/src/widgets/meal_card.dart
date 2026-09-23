@@ -1,30 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import '../providers/user_provider.dart';
+import '../models/meal_model.dart';
+import '../providers/favorite_provider.dart';
 
 Widget buildMealCard(
   BuildContext context,
   WidgetRef ref,
-  String mealName,
-  String mealImageUrl,
-  String? mealArea,
-  String? mealCountry, {
-  bool isFavorite = false,
+  Meal meal, {
+  int? favoriteId,
 }) {
+  final isFavorite = favoriteId != null;
+
   return Card(
     elevation: 4.0,
     shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12.0)),
     child: Column(
       children: [
-        if (mealImageUrl.isNotEmpty)
+        if (meal.strMealThumb.isNotEmpty)
           Stack(
             children: [
               Align(
                 alignment: Alignment.center,
                 child: Image.network(
-                  mealImageUrl,
+                  meal.strMealThumb,
                   fit: BoxFit.cover,
                   width: double.infinity,
                   height: 200.0,
@@ -34,15 +33,17 @@ Widget buildMealCard(
                 alignment: Alignment.topRight,
                 child: IconButton(
                   onPressed: () async {
-                    final userId = FirebaseAuth.instance.currentUser?.uid;
-                    if (userId == null) return;
+                    final isar = ref.read(isarProvider);
 
-                    final userService = ref.read(userServiceProvider);
-                    if (isFavorite) {
-                      await userService.removeFavoriteMeal(userId, mealName);
-                    } else {
-                      await userService.addFavoriteMeal(userId, mealName);
-                    }
+                    await isar.writeTxn(() async {
+                      if (favoriteId != null) {
+                        await isar.meals.delete(favoriteId);
+                      } else {
+                        await isar.meals.put(meal);
+                      }
+                    });
+
+                    ref.invalidate(favoriteMealsProvider);
                   },
                   icon: Icon(
                     isFavorite ? Icons.favorite : Icons.favorite_border,
@@ -54,8 +55,8 @@ Widget buildMealCard(
           ),
         Row(
           children: [
-            Text(mealName),
-            Text(mealArea != null ? ' - $mealArea' : '')
+            Text(meal.strMeal),
+            Text(meal.strArea.isNotEmpty ? ' - ${meal.strArea}' : ''),
           ],
         ),
       ],

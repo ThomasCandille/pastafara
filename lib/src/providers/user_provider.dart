@@ -11,11 +11,3 @@ final userProvider = FutureProvider.family<User?, String>((ref, userId) async {
   final userService = ref.watch(userServiceProvider);
   return userService.getUserFromDatabase(userId);
 });
-
-final favoriteMealsProvider = StreamProvider.family<List<String>, String>((
-  ref,
-  userId,
-) {
-  final userService = ref.watch(userServiceProvider);
-  return userService.watchFavoriteMeals(userId);
-});

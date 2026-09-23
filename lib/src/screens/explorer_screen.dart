@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 
-import '../providers/user_provider.dart';
+import '../providers/favorite_provider.dart';
 import '../providers/meal_provider.dart';
 import '../widgets/meal_card.dart';
 
@@ -18,15 +17,10 @@ class _ExplorerViewState extends ConsumerState<ExplorerView> {
 
   @override
   Widget build(BuildContext context) {
-    final userId = FirebaseAuth.instance.currentUser?.uid;
-
-    if (userId == null) {
-      return const Scaffold(
-        body: Center(child: Text('Utilisateur non connecté')),
-      );
-    }
-
-    final userFavorite = ref.watch(favoriteMealsProvider(userId));
+    final favoriteMeals = ref.watch(favoriteMealsProvider).value ?? [];
+    final favoritesByMealId = {
+      for (final meal in favoriteMeals) meal.idMeal: meal.id,
+    };
     final allMeals = ref.watch(allMealsProvider);
 
     return Scaffold(
@@ -53,12 +47,8 @@ class _ExplorerViewState extends ConsumerState<ExplorerView> {
                     return buildMealCard(
                       context,
                       ref,
-                      meal.strMeal,
-                      meal.strMealThumb,
-                      meal.strArea,
-                      meal.strCountry,
-                      isFavorite:
-                          userFavorite.value?.contains(meal.strMeal) ?? false,
+                      meal,
+                      favoriteId: favoritesByMealId[meal.idMeal],
                     );
                   },
                 );
