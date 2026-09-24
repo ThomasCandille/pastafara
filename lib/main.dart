@@ -5,6 +5,7 @@ import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:pastafara/src/router/app_router.dart';
 
 import 'firebase_options.dart';
@@ -41,6 +42,12 @@ class MainApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp.router(routerConfig: appRouter);
+    return MaterialApp.router(
+      theme: ThemeData(
+        textTheme: GoogleFonts.nunitoSansTextTheme(),
+        primaryTextTheme: GoogleFonts.nunitoSansTextTheme(),
+      ),
+      routerConfig: appRouter,
+    );
   }
 }
