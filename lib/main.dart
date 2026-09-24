@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:firebase_ai/firebase_ai.dart';
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/foundation.dart';
@@ -35,21 +34,6 @@ Future<void> main() async {
     ),
   );
   //unawaited(_testFirebaseAi());
-}
-
-Future<void> _testFirebaseAi() async {
-  final model = FirebaseAI.googleAI().generativeModel(
-    model: 'gemini-3.5-flash',
-  );
-  final prompt = [Content.text('Say Hello')];
-
-  try {
-    final response = await model.generateContent(prompt);
-    debugPrint(response.text);
-  } catch (error, stackTrace) {
-    debugPrint('Firebase AI request failed: $error');
-    debugPrintStack(stackTrace: stackTrace);
-  }
 }
 
 class MainApp extends StatelessWidget {
