@@ -19,4 +19,16 @@ class UserService {
     }
     return null;
   }
+
+  Future<void> addFavoriteMeal(String userId, String mealName) async {
+    await _firestore.collection('users').doc(userId).set({
+      'favoriteMeals': FieldValue.arrayUnion([mealName]),
+    }, SetOptions(merge: true));
+  }
+
+  Future<void> removeFavoriteMeal(String userId, String mealName) async {
+    await _firestore.collection('users').doc(userId).set({
+      'favoriteMeals': FieldValue.arrayRemove([mealName]),
+    }, SetOptions(merge: true));
+  }
 }

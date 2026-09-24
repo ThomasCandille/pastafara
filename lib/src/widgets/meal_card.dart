@@ -1,8 +1,10 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../models/meal_model.dart';
 import '../providers/favorite_provider.dart';
+import '../providers/user_provider.dart';
 
 Widget buildMealCard(
   BuildContext context,
@@ -17,6 +19,14 @@ Widget buildMealCard(
   }.where((value) => value.isNotEmpty).join(' • ');
 
   Future<void> toggleFavorite() async {
+    final user = FirebaseAuth.instance.currentUser;
+    if (user == null) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Connecte-toi pour gérer tes favoris.')),
+      );
+      return;
+    }
+
     final isar = ref.read(isarProvider);
 
     await isar.writeTxn(() async {
@@ -28,6 +38,24 @@ Widget buildMealCard(
     });
 
     ref.invalidate(favoriteMealsProvider);
+
+    try {
+      final userService = ref.read(userServiceProvider);
+      if (isFavorite) {
+        await userService.removeFavoriteMeal(user.uid, meal.strMeal);
+      } else {
+        await userService.addFavoriteMeal(user.uid, meal.strMeal);
+      }
+    } catch (_) {
+      if (!context.mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Favori sauvegardé sur l’appareil. Synchronisation en attente.',
+          ),
+        ),
+      );
+    }
   }
 
   return Card(
