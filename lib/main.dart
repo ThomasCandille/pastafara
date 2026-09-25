@@ -38,7 +38,6 @@ Future<void> main() async {
       child: const MainApp(),
     ),
   );
-  //unawaited(_testFirebaseAi());
 }
 
 class MainApp extends StatelessWidget {
