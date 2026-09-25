@@ -88,3 +88,9 @@ flutter run
 ## Dépôt Git
 
 Le code source est disponible sur GitHub : [ThomasCandille/pastafara](https://github.com/ThomasCandille/pastafara).
+
+## Resultat final / maquette
+
+Le resultat final d'un point de vue UI est différent de la maquette. En effet les parties avec les pâtes ne sont pas présentes car l'API de TheMealDB ne propose pas les pâtes dans ses réponses
+Les parametres de profil / allergènes / photos / etc... ont également été retirés.
+Pour faciliter également d'un point de vue style, certains background / effet ont été changés en fond d'une couleur unie
