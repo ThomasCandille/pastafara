@@ -1,3 +1,4 @@
+import 'package:app_settings/app_settings.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -87,6 +88,19 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
     }
   }
 
+  Future<void> _openWifiSettings() async {
+    try {
+      await AppSettings.openAppSettings(type: AppSettingsType.wifi);
+    } catch (_) {
+      if (!mounted) return;
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text("Impossible d'ouvrir les réglages Wi-Fi."),
+        ),
+      );
+    }
+  }
+
   Widget _buildConnectedProfile(BuildContext context, User user) {
     final email = user.email?.trim().isNotEmpty == true
         ? user.email!.trim()
@@ -104,19 +118,8 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                 width: double.infinity,
                 padding: const EdgeInsets.fromLTRB(24, 28, 24, 30),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    begin: Alignment.topCenter,
-                    end: Alignment.bottomCenter,
-                    colors: [Color(0xFFFFF9E6), Colors.white],
-                  ),
+                  color: const Color(0xFFFFF9E6),
                   borderRadius: BorderRadius.circular(30),
-                  boxShadow: const [
-                    BoxShadow(
-                      color: Color(0x12000000),
-                      blurRadius: 16,
-                      offset: Offset(0, 5),
-                    ),
-                  ],
                 ),
                 child: Column(
                   children: [
@@ -199,6 +202,57 @@ class _ProfileViewState extends ConsumerState<ProfileView> {
                           Icons.chevron_right,
                           color: Color(0xFF8B776F),
                         ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(height: 16),
+              Material(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(24),
+                child: InkWell(
+                  onTap: _openWifiSettings,
+                  borderRadius: BorderRadius.circular(24),
+                  child: const Padding(
+                    padding: EdgeInsets.all(18),
+                    child: Row(
+                      children: [
+                        CircleAvatar(
+                          radius: 23,
+                          backgroundColor: Color(0xFFDCEEFF),
+                          child: Icon(
+                            Icons.wifi,
+                            color: Color(0xFF1665A8),
+                            size: 25,
+                          ),
+                        ),
+                        SizedBox(width: 14),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Connecter mon Thermomix',
+                                style: TextStyle(
+                                  color: Color(0xFF2D1B17),
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              SizedBox(height: 3),
+                              Text(
+                                'Connexion au thermomix WIFI',
+                                style: TextStyle(
+                                  color: Color(0xFF6C5A52),
+                                  fontSize: 13,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                        SizedBox(width: 8),
+                        Icon(Icons.chevron_right, color: Color(0xFF8B776F)),
                       ],
                     ),
                   ),

@@ -25,8 +25,8 @@ class Appbar extends StatelessWidget {
                 ClipOval(
                   child: Image.asset(
                     profilImagePath,
-                    height: 48.0,
-                    width: 48.0,
+                    height: 36.0,
+                    width: 36.0,
                     fit: BoxFit.cover,
                   ),
                 ),
@@ -44,16 +44,8 @@ class Appbar extends StatelessWidget {
               children: [
                 Image(
                   image: AssetImage("assets/icons/notifications.png"),
-                  height: 48,
-                  width: 48,
-                ),
-                ClipOval(
-                  child: Image.asset(
-                    profilImagePath,
-                    height: 48.0,
-                    width: 48.0,
-                    fit: BoxFit.cover,
-                  ),
+                  height: 36,
+                  width: 36,
                 ),
               ],
             ),
